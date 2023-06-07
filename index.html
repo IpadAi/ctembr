@@ -1,22 +1,105 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>  
 <html>
 <head>
-	<title>purchase The real coppy of :ember,Wrinkle,and spirit bear on Amazon</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
+<style>
+.error {color: #FF0000;}
+</style>
 </head>
-<body>
-	<header>
-		<h1>Purchase novel study books</h1>
-		<nav>
-			<ul>
-				<li>to buy "The City Of Ember" click <a href=https://www.amazon.com/City-Ember-First-Book/dp/0375822747/ref=sr_1_2?keywords=city+of+ember&qid=1684458366&sr=8-2>here</a></li>
-				<li>to buy touching spirit bear click <a href=https://www.amazon.ca/Touching-Spirit-Bear-Ben-Mikaelsen/dp/038080560X/ref=sr_1_1?crid=S0M7KR1GZ6VS&keywords=touching+spirit+bear&qid=1684459952&sprefix=touching+spirit+%2Caps%2C86&sr=8-1>here</a></li>
-				<li>to buy a Wrinkle in time click <a href=https://www.amazon.ca/Wrinkle-Time-Madeleine-LEngle/dp/0312367554/ref=sr_1_1?crid=2MZSPV164NC4S&keywords=wrinkle+in+time&qid=1684460047&sprefix=wrinkle+in+time%2Caps%2C98&sr=8-1>here</a></li>
-			</ul>
-		</nav>
-		
-		<h2>by: A classmate, Omar</h2>
-	
-   </body>
+<body>  
 
-   </html>
+<?php
+// define variables and set to empty values
+$nameErr = $emailErr = $genderErr = $websiteErr = "";
+$name = $email = $gender = $comment = $website = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (empty($_POST["name"])) {
+    $nameErr = "Name is required";
+  } else {
+    $name = test_input($_POST["name"]);
+    // check if name only contains letters and whitespace
+    if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
+      $nameErr = "Only letters and white space allowed";
+    }
+  }
+  
+  if (empty($_POST["email"])) {
+    $emailErr = "Email is required";
+  } else {
+    $email = test_input($_POST["email"]);
+    // check if e-mail address is well-formed
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $emailErr = "Invalid email format";
+    }
+  }
+    
+  if (empty($_POST["website"])) {
+    $website = "";
+  } else {
+    $website = test_input($_POST["website"]);
+    // check if URL address syntax is valid (this regular expression also allows dashes in the URL)
+    if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$website)) {
+      $websiteErr = "URL not formated crrctly(HTML only recoginised)";
+    }
+  }
+
+  if (empty($_POST["comment"])) {
+    $comment = "";
+  } else {
+    $comment = test_input($_POST["comment"]);
+  }
+
+  if (empty($_POST["gender"])) {
+    $genderErr = "Gender is required";
+  } else {
+    $gender = test_input($_POST["gender"]);
+  }
+}
+
+function test_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+?>
+
+<h2>applacation to be assistant</h2>
+<p><span class="error">* required field</span></p>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+  Name: <input type="text" name="name" value="<?php echo $name;?>">
+  <span class="error">* <?php echo $nameErr;?></span>
+  <br><br>
+  E-mail: <input type="text" name="email" value="<?php echo $email;?>">
+  <span class="error">* <?php echo $emailErr;?></span>
+  <br><br>
+  Website: <input type="text" name="website" value="<?php echo $website;?>">
+  <span class="error"><?php echo $websiteErr;?></span>
+  <br><br>
+  Comment: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
+  <br><br>
+  Gender:
+  <input type="radio" name="gender" <?php if (isset($gender) && $gender=="female") echo "checked";?> value="female">Female
+  <input type="radio" name="gender" <?php if (isset($gender) && $gender=="male") echo "checked";?> value="male">Male
+  <input type="radio" name="gender" <?php if (isset($gender) && $gender=="other") echo "checked";?> value="other">Other  
+  <span class="error">* <?php echo $genderErr;?></span>
+  <br><br>
+  <input type="submit" name="submit" value="Submit">  
+</form>
+
+<?php
+echo "<h2>Your Input:</h2>";
+echo $name;
+echo "<br>";
+echo $email;
+echo "<br>";
+echo $website;
+echo "<br>";
+echo $comment;
+echo "<br>";
+echo $gender;
+?>
+
+</body>
+</html>
+
